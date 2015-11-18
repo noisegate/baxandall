@@ -1,0 +1,17 @@
+set logscale
+set logscale y
+set title "Baxandall tone controll; ngspice, Kicad, Python" 
+set xlabel "freq[Hz]"
+set ylabel "amp[rel.]"
+set grid
+
+plot "sim.csv" using 1:2 with lines
+
+set size 1.0, 0.6
+set terminal postscript portrait enhanced mono dashed lw 1 "Helvetica" 14 
+set output "my-plot.ps"
+replot
+set terminal x11
+set size 1,1
+
+pause -1

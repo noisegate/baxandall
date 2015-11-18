@@ -1,0 +1,57 @@
+* /media/marcell/carbon/Dropbox/kicad/baxandall/baxandall.cir
+
+* EESchema Netlist Version 1.1 (Spice format) creation date: di 17 nov 2015 02:45:26 CET
+
+* To exclude a component from the Spice Netlist add [Spice_Netlist_Enabled] user FIELD set to: N
+* To reorder the component spice node sequence add [Spice_Node_Sequence] user FIELD and define sequence: 2,1,0
+* http://www.ecircuitcenter.com/Basics.htm
+* SINGLE-POLE OPERATIONAL AMPLIFIER MACRO-MODEL
+* connections:      non-inverting input
+*                   |   inverting input
+*                   |   |   output
+*                   |   |   |
+.SUBCKT opamp1      1   2   6
+* INPUT IMPEDANCE
+RIN     1          2          10MEG
+* DC GAIN (100K) AND POLE 1 (100HZ)
+EP1	3 0	1 2	100K
+RP1	3	4	1K
+CP1	4	0	1.5915pF
+* OUTPUT BUFFER AND RESISTANCE
+EOUT	5 0	4 0	1
+ROUT	5	6	10
+.ENDS
+*
+
+* Sheet Name: /
+R1  Net-_C1-Pad2_ in {R1}		
+V2  in GND ac 1		
+XU1  GND Vm Net-_R11-Pad1_ opamp1		
+R5  Net-_R11-Pad1_ Net-_C1-Pad1_ {R5}		
+R2  Net-_R2-Pad1_ Net-_C1-Pad2_ {R2}		
+R4  Net-_C1-Pad1_ Net-_R2-Pad1_ {R4}		
+R3  Vm Net-_R2-Pad1_ {R3}		
+XU2  GND Net-_R6-Pad1_ out opamp1		
+R6  Net-_R6-Pad1_ Net-_R11-Pad1_ 10k		
+R7  out Net-_R6-Pad1_ 10k		
+R8  Net-_R8-Pad1_ in {R8}		
+R11  Net-_R11-Pad1_ Net-_R10-Pad1_ {R11}		
+R9  Net-_C2-Pad2_ Net-_R8-Pad1_ {R9}		
+R10  Net-_R10-Pad1_ Net-_C2-Pad2_ {R10}		
+C2  Vm Net-_C2-Pad2_ {C2}		
+C1  Net-_C1-Pad1_ Net-_C1-Pad2_ {C1}		
+R12  Net-_C4-Pad2_ in 3.6k		
+R13  Net-_C3-Pad2_ Net-_C4-Pad2_ 50k		
+R15  Net-_C4-Pad1_ Net-_C3-Pad2_ 50k		
+R16  Net-_R11-Pad1_ Net-_C4-Pad1_ 3.6k		
+C4  Net-_C4-Pad1_ Net-_C4-Pad2_ 5n		
+C3  Net-_C3-Pad1_ Net-_C3-Pad2_ 22n		
+R14  Net-_C3-Pad1_ Vm 0k		
+
+.options noacct
+.ac dec 100 1Hz 20kHz
+*.plot ac v(out)
+*.print ac v(out)
+.save v(out)
+
+.end

@@ -37,7 +37,7 @@ class Gnuplotter(object):
                 set xrange [10:50000]
                 set yrange [0.8: 4]
                 
-                {plot}
+                plot {plot}
 
                 set size 1.0, 1.0
                 #set terminal postscript portrait enhanced mono dashed lw 1 "Helvetica" 14 
@@ -56,12 +56,15 @@ class Gnuplotter(object):
                 #pause -1
             """
 
-    def __init__(self):
+    def __init__(self, plotfiles):
         myfile = open("gnuplot.scr","w")
+        string = ''
+        for name in plotfiles:
+            string += '"{name}" using 1:2 smooth csplines title "{title}" with lines,'.format(name=name, title='bla') 
         
         script = self.script.format(
                     title = 'Baxandall tone controll; ngspice, Kicad, Python',
-                    plot = 'plot "sim0.csv" using 1:2 smooth csplines title "C1 = 15nF" with lines, "sim1.csv" using 1:2 smooth csplines title "C1 = 25nF" with lines'
+                    plot =  string
                 )   
         
         myfile.write(script)
@@ -72,6 +75,8 @@ class Gnuplotter(object):
         
 
 class Simulator(object):
+    
+    allplotsmade=[]
     
     def __init__(self):
         netlist = open("baxandall.cir")
@@ -130,6 +135,10 @@ class Simulator(object):
         subprocess.Popen("ngspice -b tmp.cir -r sim.raw", shell=True, stdout=subprocess.PIPE).stdout.read()
         subprocess.Popen("rm tmp.cir", shell=True, stdout=subprocess.PIPE).stdout.read()
 
+    @classmethod
+    def addplot(cls, name):
+        cls.allplotsmade.append(name)
+
     def raw2csv(self, name):
         dataf = open('sim.raw','r')
         data = dataf.read()
@@ -177,6 +186,7 @@ class Simulator(object):
         outf = open("{name}.csv".format(name=name),"w")
         outf.write(csv)
         outf.close()
+        self.addplot("{name}.csv".format(name=name))
 
 class Experiments(object):
 
@@ -186,14 +196,14 @@ class Experiments(object):
     def simB(self):
         sim = Simulator()
         
-        sim.bass(0.3)
-        sim.treble(0.3)
+        sim.bass(0.4)
+        sim.treble(0.4)
         sim.mid(0.5)
         
         for i, c in enumerate([15e-9, 25e-9]):
             sim.C1 = str(c)
             sim.simulate()
-            sim.raw2csv("sim{0}".format(i))
+            sim.raw2csv("simB{0}".format(i))
 
         return sim
 
@@ -204,10 +214,12 @@ class Experiments(object):
         sim.treble(0.4)
         sim.mid(0.5)
         
+        sim.C1 = "15n"
+        
         for i, c in enumerate([560e-12, 1000e-12]):
             sim.C2 = str(c)
             sim.simulate()
-            sim.raw2csv("sim{0}".format(i))
+            sim.raw2csv("simT{0}".format(i))
 
         return sim
         
@@ -225,10 +237,13 @@ class Experiments(object):
 
 
 if __name__ == '__main__':
-    gnuplot = Gnuplotter()
     
     experiment = Experiments()
     
-    sim = experiment.simB()
+    experiment.simB()
+    
+    experiment.simT()
+           
+    gnuplot = Gnuplotter(Simulator.allplotsmade)
     gnuplot.plot()
     

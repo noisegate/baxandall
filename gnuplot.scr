@@ -13,7 +13,7 @@ set logscale x 10
                 set xrange [10:50000]
                 set yrange [0.8: 4]
                 
-                plot "simB0.csv" using 1:2 smooth csplines title "bla" with lines,"simB1.csv" using 1:2 smooth csplines title "bla" with lines,"simT0.csv" using 1:2 smooth csplines title "bla" with lines,"simT1.csv" using 1:2 smooth csplines title "bla" with lines,
+                plot "simB0-C1=1.5e-08F.csv" using 1:2 smooth csplines title "simB0-C1=1.5e-08F.csv" with lines,"simB1-C1=3e-08F.csv" using 1:2 smooth csplines title "simB1-C1=3e-08F.csv" with lines,"simT0-C2=4.6e-10F.csv" using 1:2 smooth csplines title "simT0-C2=4.6e-10F.csv" with lines,"simT1-C2=1e-09F.csv" using 1:2 smooth csplines title "simT1-C2=1e-09F.csv" with lines,
 
                 set size 1.0, 1.0
                 #set terminal postscript portrait enhanced mono dashed lw 1 "Helvetica" 14 

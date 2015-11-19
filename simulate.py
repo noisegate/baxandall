@@ -60,7 +60,7 @@ class Gnuplotter(object):
         myfile = open("gnuplot.scr","w")
         string = ''
         for name in plotfiles:
-            string += '"{name}" using 1:2 smooth csplines title "{title}" with lines,'.format(name=name, title='bla') 
+            string += '"{name}" using 1:2 smooth csplines title "{title}" with lines,'.format(name=name, title=name) 
         
         script = self.script.format(
                     title = 'Baxandall tone controll; ngspice, Kicad, Python',
@@ -73,6 +73,12 @@ class Gnuplotter(object):
     def plot(self):
         subprocess.Popen("gnuplot gnuplot.scr", shell=True, stdout=subprocess.PIPE).stdout.read()
         
+
+class Plot(object):
+    
+    name = ""
+    title = ""
+    filename=""
 
 class Simulator(object):
     
@@ -89,10 +95,10 @@ class Simulator(object):
         self.R4 = "50k"
         self.R5 = "22k"
 
-        self.R8 = "10k" 
+        self.R8 = "9k" 
         self.R9 = "50k"
         self.R10= "50k"
-        self.R11= "10k"
+        self.R11= "9k"
             
         self.C1 = "47n"
         self.C2 = "560p"
@@ -197,29 +203,29 @@ class Experiments(object):
         sim = Simulator()
         
         sim.bass(0.4)
-        sim.treble(0.4)
+        sim.treble(0.5)
         sim.mid(0.5)
         
-        for i, c in enumerate([15e-9, 25e-9]):
+        for i, c in enumerate([15e-9, 30e-9]):
             sim.C1 = str(c)
             sim.simulate()
-            sim.raw2csv("simB{0}".format(i))
+            sim.raw2csv("simB{0}-C1={1}F".format(i,str(c)))
 
         return sim
 
     def simT(self):
         sim = Simulator()
         
-        sim.bass(0.4)
+        sim.bass(0.5)
         sim.treble(0.4)
         sim.mid(0.5)
         
         sim.C1 = "15n"
         
-        for i, c in enumerate([560e-12, 1000e-12]):
+        for i, c in enumerate([460e-12, 1000e-12]):
             sim.C2 = str(c)
             sim.simulate()
-            sim.raw2csv("simT{0}".format(i))
+            sim.raw2csv("simT{0}-C2={1}F".format(i,str(c)))
 
         return sim
         

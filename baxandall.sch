@@ -32,7 +32,6 @@ LIBS:opa2134
 LIBS:pspice
 LIBS:spice
 LIBS:xop
-LIBS:baxendall-cache
 EELAYER 25 0
 EELAYER END
 $Descr A4 11693 8268
@@ -58,8 +57,6 @@ F 3 "" H 2650 1600 30  0000 C CNN
 	1    2650 1600
 	0    1    1    0   
 $EndComp
-Wire Wire Line
-	2050 1600 2500 1600
 Text GLabel 2050 1600 0    60   Input ~ 0
 in
 Text Notes 8050 2950 0    60   ~ 0
@@ -75,12 +72,6 @@ F 3 "" H 1450 2450 60  0000 C CNN
 	1    1450 2450
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	1450 2050 1450 1800
-Wire Wire Line
-	1450 2850 1450 3200
-Wire Wire Line
-	1450 3200 1400 3200
 $Comp
 L GND #PWR01
 U 1 1 56410FA7
@@ -203,14 +194,6 @@ F 3 "" H 3550 1600 30  0000 C CNN
 	1    3550 1600
 	0    1    1    0   
 $EndComp
-Wire Wire Line
-	3700 1600 3800 1600
-Wire Wire Line
-	4100 1600 4600 1600
-Wire Wire Line
-	2800 1600 2900 1600
-Wire Wire Line
-	3200 1600 3400 1600
 $Comp
 L R R3
 U 1 1 56413D6A
@@ -222,19 +205,6 @@ F 3 "" H 3300 1900 30  0000 C CNN
 	1    3300 1900
 	-1   0    0    1   
 $EndComp
-Wire Wire Line
-	3300 2050 3300 2450
-Wire Wire Line
-	3150 2200 3650 2200
-Wire Wire Line
-	3650 2400 3500 2400
-Wire Wire Line
-	3500 2400 3500 2700
-Wire Wire Line
-	4450 2300 4900 2300
-Wire Wire Line
-	4600 1600 4600 4300
-Connection ~ 4600 2300
 $Comp
 L xop U2
 U 1 1 5641463A
@@ -268,20 +238,6 @@ F 3 "" H 5450 2300 30  0000 C CNN
 	1    5450 2300
 	0    1    1    0   
 $EndComp
-Wire Wire Line
-	5200 2300 5300 2300
-Wire Wire Line
-	5250 2300 5250 2650
-Wire Wire Line
-	5250 2650 5350 2650
-Connection ~ 5250 2300
-Wire Wire Line
-	5600 2300 6250 2300
-Wire Wire Line
-	6250 2300 6250 2750
-Wire Wire Line
-	6150 2750 6350 2750
-Connection ~ 6250 2750
 $Comp
 L GND #PWR03
 U 1 1 56414B2E
@@ -293,10 +249,6 @@ F 3 "" H 5250 2950 60  0000 C CNN
 	1    5250 2950
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	5350 2850 5250 2850
-Wire Wire Line
-	5250 2850 5250 2950
 $Comp
 L R R8
 U 1 1 56414F47
@@ -341,6 +293,79 @@ F 3 "" H 3550 3200 30  0000 C CNN
 	1    3550 3200
 	0    1    1    0   
 $EndComp
+$Comp
+L C C2
+U 1 1 56415677
+P 3300 2600
+F 0 "C2" H 3325 2700 50  0000 L CNN
+F 1 "{C2}" H 3050 2700 50  0000 L CNN
+F 2 "" H 3338 2450 30  0000 C CNN
+F 3 "" H 3300 2600 60  0000 C CNN
+	1    3300 2600
+	1    0    0    -1  
+$EndComp
+Text Notes 1400 6950 0    60   ~ 0
+http://www.ecircuitcenter.com/Circuits/opmodel1/opmodel1.htm
+Text Notes 8050 3450 0    60   ~ 0
+http://sound.westhost.com/dwopa2.htm
+$Comp
+L C C1
+U 1 1 564253F1
+P 3300 1350
+F 0 "C1" V 3150 1450 50  0000 L CNN
+F 1 "{C1}" V 3150 1150 50  0000 L CNN
+F 2 "" H 3338 1200 30  0000 C CNN
+F 3 "" H 3300 1350 60  0000 C CNN
+	1    3300 1350
+	0    1    1    0   
+$EndComp
+Text GLabel 3150 2200 0    60   Input ~ 0
+Vm
+Wire Wire Line
+	2050 1600 2500 1600
+Wire Wire Line
+	1450 2050 1450 1800
+Wire Wire Line
+	1450 2850 1450 3200
+Wire Wire Line
+	1450 3200 1400 3200
+Wire Wire Line
+	3700 1600 3800 1600
+Wire Wire Line
+	4100 1600 4600 1600
+Wire Wire Line
+	2800 1600 2900 1600
+Wire Wire Line
+	3200 1600 3400 1600
+Wire Wire Line
+	3300 2050 3300 2450
+Wire Wire Line
+	3150 2200 3650 2200
+Wire Wire Line
+	3650 2400 3500 2400
+Wire Wire Line
+	3500 2400 3500 2700
+Wire Wire Line
+	4450 2300 4900 2300
+Connection ~ 4600 2300
+Wire Wire Line
+	5200 2300 5300 2300
+Wire Wire Line
+	5250 2300 5250 2650
+Wire Wire Line
+	5250 2650 5350 2650
+Connection ~ 5250 2300
+Wire Wire Line
+	5600 2300 6250 2300
+Wire Wire Line
+	6250 2300 6250 2750
+Wire Wire Line
+	6150 2750 6350 2750
+Connection ~ 6250 2750
+Wire Wire Line
+	5350 2850 5250 2850
+Wire Wire Line
+	5250 2850 5250 2950
 Wire Wire Line
 	4600 3200 4100 3200
 Wire Wire Line
@@ -351,39 +376,11 @@ Wire Wire Line
 	2900 3200 2800 3200
 Wire Wire Line
 	2500 3200 2300 3200
-Wire Wire Line
-	2300 1600 2300 4300
 Connection ~ 2300 1600
-$Comp
-L C C2
-U 1 1 56415677
-P 3300 2600
-F 0 "C2" H 3325 2700 50  0000 L CNN
-F 1 "{C2}" H 3000 2600 50  0000 L CNN
-F 2 "" H 3338 2450 30  0000 C CNN
-F 3 "" H 3300 2600 60  0000 C CNN
-	1    3300 2600
-	1    0    0    -1  
-$EndComp
 Connection ~ 3300 2200
 Wire Wire Line
 	3300 2750 3300 3200
 Connection ~ 3300 3200
-Text Notes 1400 6950 0    60   ~ 0
-http://www.ecircuitcenter.com/Circuits/opmodel1/opmodel1.htm
-Text Notes 8050 3450 0    60   ~ 0
-http://sound.westhost.com/dwopa2.htm
-$Comp
-L C C1
-U 1 1 564253F1
-P 3300 1350
-F 0 "C1" H 3325 1450 50  0000 L CNN
-F 1 "{C1}" H 3325 1250 50  0000 L CNN
-F 2 "" H 3338 1200 30  0000 C CNN
-F 3 "" H 3300 1350 60  0000 C CNN
-	1    3300 1350
-	0    1    1    0   
-$EndComp
 Wire Wire Line
 	2850 1600 2850 1350
 Wire Wire Line
@@ -397,114 +394,8 @@ Connection ~ 3750 1600
 Wire Wire Line
 	3300 1750 3300 1600
 Connection ~ 3300 1600
-$Comp
-L R R12
-U 1 1 5642907B
-P 2650 4300
-F 0 "R12" V 2730 4300 50  0000 C CNN
-F 1 "3.6k" V 2650 4300 50  0000 C CNN
-F 2 "" V 2580 4300 30  0000 C CNN
-F 3 "" H 2650 4300 30  0000 C CNN
-	1    2650 4300
-	0    1    1    0   
-$EndComp
-$Comp
-L R R13
-U 1 1 564290D6
-P 3050 4300
-F 0 "R13" V 3130 4300 50  0000 C CNN
-F 1 "50k" V 3050 4300 50  0000 C CNN
-F 2 "" V 2980 4300 30  0000 C CNN
-F 3 "" H 3050 4300 30  0000 C CNN
-	1    3050 4300
-	0    1    1    0   
-$EndComp
-$Comp
-L R R15
-U 1 1 5642923A
-P 3550 4300
-F 0 "R15" V 3630 4300 50  0000 C CNN
-F 1 "50k" V 3550 4300 50  0000 C CNN
-F 2 "" V 3480 4300 30  0000 C CNN
-F 3 "" H 3550 4300 30  0000 C CNN
-	1    3550 4300
-	0    1    1    0   
-$EndComp
-$Comp
-L R R16
-U 1 1 56429297
-P 3950 4300
-F 0 "R16" V 4030 4300 50  0000 C CNN
-F 1 "3.6k" V 3950 4300 50  0000 C CNN
-F 2 "" V 3880 4300 30  0000 C CNN
-F 3 "" H 3950 4300 30  0000 C CNN
-	1    3950 4300
-	0    1    1    0   
-$EndComp
 Wire Wire Line
-	2300 4300 2500 4300
+	4600 1600 4600 3200
 Wire Wire Line
-	2800 4300 2900 4300
-Wire Wire Line
-	3200 4300 3400 4300
-Wire Wire Line
-	3700 4300 3800 4300
-Wire Wire Line
-	4600 4300 4100 4300
-$Comp
-L C C4
-U 1 1 56429A6F
-P 3300 4650
-F 0 "C4" V 3150 4750 50  0000 L CNN
-F 1 "5n" V 3500 4550 50  0000 L CNN
-F 2 "" H 3338 4500 30  0000 C CNN
-F 3 "" H 3300 4650 60  0000 C CNN
-	1    3300 4650
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	2850 4300 2850 4650
-Wire Wire Line
-	2850 4650 3150 4650
-Connection ~ 2850 4300
-Wire Wire Line
-	3450 4650 3750 4650
-Wire Wire Line
-	3750 4650 3750 4300
-Connection ~ 3750 4300
-$Comp
-L C C3
-U 1 1 56429DB8
-P 3300 4050
-F 0 "C3" H 3325 4150 50  0000 L CNN
-F 1 "22n" H 3000 4050 50  0000 L CNN
-F 2 "" H 3338 3900 30  0000 C CNN
-F 3 "" H 3300 4050 60  0000 C CNN
-	1    3300 4050
-	1    0    0    -1  
-$EndComp
-Text GLabel 3150 2200 0    60   Input ~ 0
-Vm
-$Comp
-L R R14
-U 1 1 5642A1F2
-P 3300 3650
-F 0 "R14" V 3380 3650 50  0000 C CNN
-F 1 "0k" V 3300 3650 50  0000 C CNN
-F 2 "" V 3230 3650 30  0000 C CNN
-F 3 "" H 3300 3650 30  0000 C CNN
-	1    3300 3650
-	-1   0    0    1   
-$EndComp
-Connection ~ 2300 3200
-Connection ~ 4600 3200
-Wire Wire Line
-	3300 4200 3300 4300
-Connection ~ 3300 4300
-Wire Wire Line
-	3300 3900 3300 3800
-Wire Wire Line
-	3300 3500 3300 3400
-Text GLabel 3300 3400 0    60   Input ~ 0
-Vm
+	2300 3200 2300 1600
 $EndSCHEMATC

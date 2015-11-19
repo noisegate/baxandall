@@ -1,5 +1,75 @@
+#  Copyright (C) 2015 Marcell Marosvolgyi
+
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#  MA 02110-1301, USA.
+#  
+
+
 import numpy as np
 import subprocess
+
+class Gnuplotter(object):
+	
+	script = """set logscale x 10
+				set logscale y 10
+				set grid mxtics mytics xtics ytics lt 1 lc rgb 'gray70', lt 1 lc rgb 'gray90'
+				set mxtics 10
+				set mytics 5
+
+				set boxwidth 8
+
+				set title "{title}" 
+				set xlabel "freq[Hz]"
+				set ylabel "amp[rel.]"
+
+				set xrange [10:50000]
+				set yrange [0.8: 4]
+				
+				{plot}
+
+				set size 1.0, 1.0
+				#set terminal postscript portrait enhanced mono dashed lw 1 "Helvetica" 14 
+				#set terminal pngcairo  transparent enhanced font "arial,10" fontscale 1.0 size 500,500; set zeroaxis;
+				#set terminal pngcairo  enhanced font "arial,20" fontscale 1.0 size 1500,1500; 
+				#set output "my-plot.png"
+				#set terminal pdf
+				#set output "my-plot.pdf"
+				set term svg enhanced font "arial,20" mouse size 1500,1200
+				set output "my-plot.svg"
+
+				replot
+				set terminal x11
+				set size 1,1
+
+				#pause -1
+			"""
+
+	def __init__(self):
+		myfile = open("gnuplot.scr","w")
+		
+		script = self.script.format(
+					title = 'Baxandall tone controll; ngspice, Kicad, Python',
+					plot = 'plot "sim0.csv" using 1:2 smooth csplines title "C1 = 15nF" with lines, "sim1.csv" using 1:2 smooth csplines title "C1 = 25nF" with lines'
+				)	
+		
+		myfile.write(script)
+		myfile.close()
+
+	def plot(self):
+		subprocess.Popen("gnuplot gnuplot.scr", shell=True, stdout=subprocess.PIPE).stdout.read()
+		
 
 class Simulator(object):
 	
@@ -19,17 +89,8 @@ class Simulator(object):
 		self.R10= "50k"
 		self.R11= "10k"
 			
-		self.R12 = "3.6k"
-		self.R13 = "50k"
-		self.R15 = "50k"
-		self.R16 = "3.6k"
-			
-			
 		self.C1 = "47n"
 		self.C2 = "560p"
-			
-		self.C3 = "22n"
-		self.C4 = "5n"
 			
 		self.filename = "tmp.cir"
 		
@@ -60,26 +121,17 @@ class Simulator(object):
 										R9  = self.R9,
 										R10 = self.R10,
 										R11 = self.R11,
-										R12 = self.R12,
-										R13 = self.R13,
-										R15 = self.R15,
-										R16 = self.R16,
 										C1  = self.C1,
-										C2  = self.C2,
-										C3  = self.C3,
-										C4  = self.C4))
+										C2  = self.C2))
 		textfile.close()
 			
-	def simulate(self, i):
+	def simulate(self):
 		self.subst()
-		subprocess.Popen("ngspice -b tmp.cir -r sim{0}.raw".format(i), shell=True, stdout=subprocess.PIPE).stdout.read()
+		subprocess.Popen("ngspice -b tmp.cir -r sim.raw", shell=True, stdout=subprocess.PIPE).stdout.read()
 		subprocess.Popen("rm tmp.cir", shell=True, stdout=subprocess.PIPE).stdout.read()
 
-	def plot(self):
-		subprocess.Popen("gnuplot gnuplot.scr", shell=True, stdout=subprocess.PIPE).stdout.read()
-		
 	def raw2csv(self, name):
-		dataf = open('sim0.raw','r')
+		dataf = open('sim.raw','r')
 		data = dataf.read()
 		dataf.close()
 		self.data = data
@@ -126,34 +178,57 @@ class Simulator(object):
 		outf.write(csv)
 		outf.close()
 
-def sim1():
-	sim = Simulator()
-	
-	sim.bass(0.4)
-	sim.treble(0.5)
-	sim.mid(0.5)
-	
-	for i, c in enumerate([10e-9]):
-		sim.C1 = str(c)
-		sim.simulate(i)
+class Experiments(object):
 
-	return sim
+	def __init__(self):
+		pass
 
-def sim2():
-	sim = Simulator()
-	
-	sim.bass(0.4)
-	sim.treble(0.5)
-	sim.mid(0.5)
-	
-	for i, r in enumerate(np.arange(5000,40000,5000)):
-		sim.R1 = str(r)
-		sim.R5 = str(r)
-		sim.simulate(i)
+	def simB(self):
+		sim = Simulator()
+		
+		sim.bass(0.3)
+		sim.treble(0.3)
+		sim.mid(0.5)
+		
+		for i, c in enumerate([15e-9, 25e-9]):
+			sim.C1 = str(c)
+			sim.simulate()
+			sim.raw2csv("sim{0}".format(i))
+
+		return sim
+
+	def simT(self):
+		sim = Simulator()
+		
+		sim.bass(0.4)
+		sim.treble(0.4)
+		sim.mid(0.5)
+		
+		for i, c in enumerate([560e-12, 1000e-12]):
+			sim.C2 = str(c)
+			sim.simulate()
+			sim.raw2csv("sim{0}".format(i))
+
+		return sim
+		
+	def sim2(self):
+		sim = Simulator()
+		
+		sim.bass(0.4)
+		sim.treble(0.5)
+		sim.mid(0.5)
+		
+		for i, r in enumerate(np.arange(5000,40000,5000)):
+			sim.R1 = str(r)
+			sim.R5 = str(r)
+			sim.simulate(i)
 
 
 if __name__ == '__main__':
-	sim = sim1()
-	sim.raw2csv("sim")
-	sim.plot()	
+	gnuplot = Gnuplotter()
+	
+	experiment = Experiments()
+	
+	sim = experiment.simB()
+	gnuplot.plot()
 	

@@ -1,6 +1,6 @@
 * /media/marcell/carbon/Dropbox/kicad/baxandall/baxandall.cir
 
-* EESchema Netlist Version 1.1 (Spice format) creation date: di 17 nov 2015 02:45:26 CET
+* EESchema Netlist Version 1.1 (Spice format) creation date: do 19 nov 2015 01:33:52 CET
 
 * To exclude a component from the Spice Netlist add [Spice_Netlist_Enabled] user FIELD set to: N
 * To reorder the component spice node sequence add [Spice_Node_Sequence] user FIELD and define sequence: 2,1,0
@@ -40,16 +40,9 @@ R9  Net-_C2-Pad2_ Net-_R8-Pad1_ {R9}
 R10  Net-_R10-Pad1_ Net-_C2-Pad2_ {R10}		
 C2  Vm Net-_C2-Pad2_ {C2}		
 C1  Net-_C1-Pad1_ Net-_C1-Pad2_ {C1}		
-R12  Net-_C4-Pad2_ in 3.6k		
-R13  Net-_C3-Pad2_ Net-_C4-Pad2_ 50k		
-R15  Net-_C4-Pad1_ Net-_C3-Pad2_ 50k		
-R16  Net-_R11-Pad1_ Net-_C4-Pad1_ 3.6k		
-C4  Net-_C4-Pad1_ Net-_C4-Pad2_ 5n		
-C3  Net-_C3-Pad1_ Net-_C3-Pad2_ 22n		
-R14  Net-_C3-Pad1_ Vm 0k		
 
 .options noacct
-.ac dec 100 1Hz 20kHz
+.ac dec 100 1Hz 50kHz
 *.plot ac v(out)
 *.print ac v(out)
 .save v(out)

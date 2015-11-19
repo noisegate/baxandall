@@ -1,17 +1,33 @@
-set logscale
-set logscale y
-set title "Baxandall tone controll; ngspice, Kicad, Python" 
-set xlabel "freq[Hz]"
-set ylabel "amp[rel.]"
-set grid
+set logscale x 10
+				set logscale y 10
+				set grid mxtics mytics xtics ytics lt 1 lc rgb 'gray70', lt 1 lc rgb 'gray90'
+				set mxtics 10
+				set mytics 5
 
-plot "sim.csv" using 1:2 with lines
+				set boxwidth 8
 
-set size 1.0, 0.6
-set terminal postscript portrait enhanced mono dashed lw 1 "Helvetica" 14 
-set output "my-plot.ps"
-replot
-set terminal x11
-set size 1,1
+				set title "Baxandall tone controll; ngspice, Kicad, Python" 
+				set xlabel "freq[Hz]"
+				set ylabel "amp[rel.]"
 
-pause -1
+				set xrange [10:50000]
+				set yrange [0.8: 4]
+				
+				plot "sim0.csv" using 1:2 smooth csplines title "C1 = 15nF" with lines, "sim1.csv" using 1:2 smooth csplines title "C1 = 25nF" with lines
+
+				set size 1.0, 1.0
+				#set terminal postscript portrait enhanced mono dashed lw 1 "Helvetica" 14 
+				#set terminal pngcairo  transparent enhanced font "arial,10" fontscale 1.0 size 500,500; set zeroaxis;
+				#set terminal pngcairo  enhanced font "arial,20" fontscale 1.0 size 1500,1500; 
+				#set output "my-plot.png"
+				#set terminal pdf
+				#set output "my-plot.pdf"
+				set term svg enhanced font "arial,20" mouse size 1500,1200
+				set output "my-plot.svg"
+
+				replot
+				set terminal x11
+				set size 1,1
+
+				#pause -1
+			
